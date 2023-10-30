@@ -26,6 +26,8 @@ admin.site.register(Lab, LabAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Application)
 admin.site.register(Mailing)
+admin.site.register(Field)
+
 
 
 

@@ -7,15 +7,11 @@ import random
 
 def index(request):
     labs = Lab.objects.all()
-    all_fields = []
-    for lab in labs:
-        lab_fields = lab.fields.split(',')
-        for lf in lab_fields:
-            all_fields.append(lf) 
+    fields = Field.objects.all() 
     
     best_projects = Project.objects.all().select_related('lab')[:3]
     context = {
-        'all_fields': all_fields,
+        'all_fields': fields,
         'best_projects': best_projects,
     }
     return render(request, 'index.html', context)
@@ -27,27 +23,39 @@ def how(request):
 
 def lab(request, lab_slug):
     lab = Lab.objects.get(slug=lab_slug)
-    lab_fields = lab.fields.split(',')
+    lab_fields = lab.fields.all()
     context = {
         'lab': lab,
         'lab_fields': lab_fields
     }
     return render(request, 'lab.html', context)
-def projects(request, lab_slug):
+def projects(request, lab_slug, field_slug):
+    lab = Lab.objects.get(slug=lab_slug)
+    field = Field.objects.get(slug=field_slug)
+
+    projects = Project.objects.filter(lab=lab, field=field)
+    context = {
+        'projects': projects,
+        'lab': lab,
+        'field': field,
+    }
+    return render(request, 'projects.html', context)
+def all_projects(request, lab_slug):
     lab = Lab.objects.get(slug=lab_slug)
     projects = Project.objects.filter(lab=lab)
     context = {
         'projects': projects,
         'lab': lab,
-
     }
-    return render(request, 'projects.html', context)
+    return render(request, 'all_projects.html', context)
 
-def project(request, lab_slug, project_slug):
+def project(request, lab_slug, field_slug, project_slug):
     lab = Lab.objects.get(slug=lab_slug)
+    field = Field.objects.get(slug=field_slug)
     project = Project.objects.get(slug=project_slug)
     context = {
         'lab': lab,
+        'field': field,
         'project': project,
     }
     return render(request, 'project.html', context)
@@ -55,12 +63,10 @@ def project(request, lab_slug, project_slug):
 
 def about(request):
     labs = Lab.objects.all()
-    all_fields = []
-    for l in labs:
-        all_fields += l.fields.split(',')
+    all_fields = Field.objects.all()
     context = {
-        'lab': lab,
-        'all_fields': random.sample(all_fields, 6)
+        'labs': labs,
+        'all_fields': random.sample(list(all_fields), 6)
     }
     return render(request, 'about.html', context)
 

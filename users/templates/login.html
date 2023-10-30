@@ -8,10 +8,9 @@
         <div class="col-12 col-md-6 order-1 order-md-0 align-self-md-end">
           <div class="row py-3 py-sm-5 py-xl-9 bsb-section-mt-md-1 justify-content-sm-center">
             <div class="col-12 col-sm-10">
-              <h1 class="display-2 fw-bolder mb-4 text-white">Наши контакты</h1>
+              <h1 class="display-2 fw-bolder mb-4 text-white">Авторизация</h1>
               <div class="row">
                 <div class="col-12 col-xxl-8">
-                  <p class="fs-5 mb-0 text-secondary">Communication is the key to success, and we're always here to answer your questions.</p>
                 </div>
               </div>
             </div>
@@ -28,21 +27,34 @@
 
 {% endblock nav %}
 {% block main %}
-<div class="content-section">
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Вход</legend>
-            {{ form }}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Войти</button>
+    <section class=" py-xl-8 ">
+        
+  
+        <div class="container overflow-hidden">
+          <div class="row gy-4 gy-md-0 gx-xxl-5">
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="row gy-4 gy-xl-5 p-4 p-xl-5">
+                  <div class="col-12">
+                    <label for="fullname" class="form-label">Имя пользователя <span class="text-danger">*</span></label>
+                    {{form.username}}
+                  </div>
+                  <div class="col-12">
+                    <label for="password" class="form-label">Пароль <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      {{form.password}}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-grid">
+                      <button class="btn btn-primary btn-lg" type="submit">Войти</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+          </div>
         </div>
-    </form>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Нужен аккаунт? <a class="ml-2" href="{% url 'register' %}">Регистрация</a>
-        </small>
-    </div>
-</div>
+    </section>
+
 {% endblock main %}
+
